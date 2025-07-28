@@ -1,4 +1,4 @@
-#include "FSML/models/MLRModel/MLRModel.h"
+#include "FSML/models/PlanarModel/MLRModel.h"
     double MLRModel::estimate(const std::vector<double>& featureVals) {
         double estimate = constant;
         for (int i = 0; i < coeffs.size(); i++) {
