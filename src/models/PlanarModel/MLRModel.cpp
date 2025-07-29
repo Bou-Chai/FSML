@@ -20,7 +20,7 @@
         for (int n = 0; n < epochs; n++) {
             // *Stochastic*
             std::random_device rd;
-            int seed = rd();
+            unsigned int seed = rd();
             trainingFeatures.reshuffle(seed);
             trainingTargets.reshuffle(seed);
 
@@ -29,6 +29,7 @@
             for (int i = 0; i < trainingFeatures.height(); i++) {
                 // Calculate error
                 error = estimate(trainingFeatures.getRow<double>(i)) - trainingTargets.at<double>(0, i);
+                std::cout <<"\n";
                 // Update constant and coefficients
                 constant = constant - learningRate * error;
                 for (int j = 0; j < coeffs.size(); j++) {
