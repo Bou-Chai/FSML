@@ -1,4 +1,6 @@
+#include <random>
 #include "FSML/models/PlanarModel/MLRModel.h"
+
     double MLRModel::estimate(const std::vector<double>& featureVals) {
         double estimate = constant;
         for (int i = 0; i < coeffs.size(); i++) {
@@ -7,26 +9,30 @@
         return estimate;
     }
 
-    void MLRModel::train(tables::Table& trainingData, int featuresStart, int featuresEnd, std::string targetColTitle, int epochs) {
+    void MLRModel::train(tables::Table& trainingFeatures, tables::Table& trainingTargets, int epochs) {
         // Initialize constant and coefficients
         constant = 0;
-        for (int i = featuresStart; i < featuresEnd; i++) {
+        for (int i = 0; i < trainingFeatures.width(); i++) {
             coeffs.push_back(0);
         }
 
         // Train for n epochs
         for (int n = 0; n < epochs; n++) {
             // *Stochastic*
-            trainingData.reshuffle();
+            std::random_device rd;
+            int seed = rd();
+            trainingFeatures.reshuffle(seed);
+            trainingTargets.reshuffle(seed);
+
             // Go through all training data
             double error;
-            for (int i = 0; i < trainingData.height(); i++) {
+            for (int i = 0; i < trainingFeatures.height(); i++) {
                 // Calculate error
-                error = estimate(trainingData.getRow<double>(i, featuresStart, featuresEnd)) - trainingData.at<double>(targetColTitle, i);
+                error = estimate(trainingFeatures.getRow<double>(i)) - trainingTargets.at<double>(0, i);
                 // Update constant and coefficients
                 constant = constant - learningRate * error;
                 for (int j = 0; j < coeffs.size(); j++) {
-                    coeffs.at(j) = coeffs.at(j) - learningRate * trainingData.at<double>(featuresStart + j, i) * error;
+                    coeffs.at(j) = coeffs.at(j) - learningRate * trainingFeatures.at<double>(j, i) * error;
                 }
             }
         }

@@ -1,5 +1,5 @@
 #include <string>
-#include "FSML/models/MLRModel/MLRModel.h"
+#include "FSML/models/PlanarModel/MLRModel.h"
 #include "FSML/evaluation/Evaluation.h"
 #include "Tables/Table.h"
 
@@ -10,20 +10,23 @@ int main() {
     std::vector<std::string> titleList = {"fixed acidity", "volatile acidity", "citric acid", "residual sugar", "chlorides", "free sulfur dioxide", "total sulfur dioxide", "density", "pH", "sulphates", "alcohol", "quality"};
     dataset.toDouble(titleList);
 
-    // Normalize features
-    titleList.pop_back();
-    dataset.normalize<double>(titleList);
-
     // Calculate size of training data and split data for training and testing
     int trainSize = 0.6 * dataset.height();
-    tables::Table trainingData = dataset.copy(0, 12, 0, trainSize);
-    tables::Table featuresTest = dataset.copy(0, 11, trainSize, dataset.height());
+    tables::Table trainingFeatures = dataset.copy(0, 11, 0, trainSize);
+    tables::Table trainingTargets = dataset.copy(11, 12, 0, trainSize);
+    tables::Table testFeatures = dataset.copy(0, 11, trainSize, dataset.height());
     tables::Table targetTest = dataset.copy(11, 12, trainSize, dataset.height());
+
+    // Normalize features
+    //titleList.pop_back();
+    //dataset.normalize<double>(titleList);
+    trainingFeatures.normalize<double>();
+    testFeatures.normalize<double>();
 
     // Train model using gradient descent
     MLRModel model;
     model.setLearningRate(0.04);
-    model.train(trainingData, 0, 11, "quality", 5);
+    model.train(trainingFeatures, trainingTargets, 5);
 
     // Print model weights
     std::cout << "Constant: " << model.getConstant() << "\n";
@@ -35,7 +38,7 @@ int main() {
     // Performance metrics
 
     // Generate column of zero-rule values
-    double mean = trainingData.col<double>("quality").getMean(0, trainingData.height());
+    double mean = trainingTargets.col<double>("quality").getMean(0, trainingTargets.height());
     tables::Column<double> targetPredicted0;
     for (int i = 0; i < targetTest.height(); i++) {
         targetPredicted0.add(mean);
@@ -44,7 +47,7 @@ int main() {
     // Generate column of values predicted by the model based on the test feature data
     tables::Column<double> targetPredictedM;
     for (int i = 0; i < targetTest.height(); i++) {
-        targetPredictedM.add(model.estimate(featuresTest.getRow<double>(i)));
+        targetPredictedM.add(model.estimate(testFeatures.getRow<double>(i)));
     }
 
     // Print performance metrics

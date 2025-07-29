@@ -1,1 +1,1 @@
-add_subdirectory(./MLRModel)
+add_subdirectory(./PlanarModel)
