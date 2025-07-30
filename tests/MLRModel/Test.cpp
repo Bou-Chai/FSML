@@ -1,5 +1,6 @@
 #include <string>
 #include "FSML/models/PlanarModel/MLRModel.h"
+#include "FSML/training/gradientdescent/SGDTrainer.h"
 #include "FSML/evaluation/Evaluation.h"
 #include "Tables/Table.h"
 
@@ -29,7 +30,10 @@ int main() {
     // Train model using gradient descent
     MLRModel model;
     model.setLearningRate(0.04);
-    model.train(trainingFeatures, trainingTargets, 5);
+    //model.train(trainingFeatures, trainingTargets, 5);
+    SGDTrainer trainer;
+    trainer.train(model, trainingFeatures, trainingTargets, 5);
+    //model.train(tr, trainingFeatures, trainingTargets, 5);
 
     // Print model weights
     std::cout << "Constant: " << model.getConstant() << "\n";

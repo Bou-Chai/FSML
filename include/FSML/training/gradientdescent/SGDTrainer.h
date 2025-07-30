@@ -1,11 +1,13 @@
 #ifndef SGDTRAINER_H
 #define SGDTRAINER_H
 
-#include "FSML/training/Trainer.h"
+#include "FSML/training/gradientdescent/GDTrainer.h"
+#include "FSML/models/PlanarModel/PlanarModel.h"
+#include "Tables/Table.h"
 
-class SGDTrainer: public Trainer {
+class SGDTrainer: public GDTrainer {
 public:
-    void train();
+    void train(PlanarModel& model, tables::Table& trainingFeatures, tables::Table& trainingTargets, int epochs);
 };
 
 #endif

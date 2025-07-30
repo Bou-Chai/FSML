@@ -1,5 +1,6 @@
-#include "FSML/models/PlanarModel/MLRModel.h"
-    double MLRModel::estimate(const std::vector<double>& featureVals) {
+#include "FSML/models/PlanarModel/PlanarModel.h"
+
+    double PlanarModel::estimate(const std::vector<double>& featureVals) {
         double estimate = constant;
         for (int i = 0; i < coeffs.size(); i++) {
             estimate += coeffs[i] * featureVals[i];
@@ -8,7 +9,7 @@
     }
 
     
-
+/*
     void MLRModel::train(tables::Table& trainingData, int featuresStart, int featuresEnd, std::string targetColTitle, int epochs) {
         // Initialize constant and coefficients
         constant = 0;
@@ -33,27 +34,27 @@
             }
         }
     }
-    
-    double MLRModel::getConstant() {
+    */
+    double PlanarModel::getConstant() {
         return constant;
     }
     
-    void MLRModel::setConstant(double constant) {
+    void PlanarModel::setConstant(double constant) {
         this->constant = constant;
     }
     
-    std::vector<double> MLRModel::getCoeffs() {
+    std::vector<double> PlanarModel::getCoeffs() {
         return coeffs;
     }
     
-    void MLRModel::setCoeffs(std::vector<double>) {
+    void PlanarModel::setCoeffs(std::vector<double> coeffs) {
         this->coeffs = coeffs;
     }
     
-    double MLRModel::getLearningRate() {
+    double PlanarModel::getLearningRate() {
         return learningRate;
     }
 
-    void MLRModel::setLearningRate(double learningRate) {
+    void PlanarModel::setLearningRate(double learningRate) {
         this->learningRate = learningRate;
     }

@@ -1,13 +1,21 @@
 #include <random>
 #include "FSML/models/PlanarModel/MLRModel.h"
+//#include "FSML/training/gradientdescent/GDTrainer.h"
 
-    double MLRModel::estimate(const std::vector<double>& featureVals) {
-        double estimate = constant;
-        for (int i = 0; i < coeffs.size(); i++) {
-            estimate += coeffs[i] * featureVals[i];
+    void MLRModel::updateWeightsGD(tables::Table& trainingFeatures, tables::Table& trainingTargets, int rowIndex) {
+        // Calculate error
+        double error = this->estimate(trainingFeatures.getRow<double>(rowIndex)) - trainingTargets.at<double>(0, rowIndex);
+        // Update constant and coefficients
+        constant = constant - learningRate * error;
+        for (int j = 0; j < coeffs.size(); j++) {
+            coeffs.at(j) = coeffs.at(j) - learningRate * trainingFeatures.at<double>(j, rowIndex) * error;
         }
-        return estimate;
     }
+/*
+    void MLRModel::train(GDTrainer& trainer, tables::Table& trainingFeatures, tables::Table& trainingTargets, int epochs) {
+        trainer.train(*this, trainingFeatures, trainingTargets, epochs);
+    }
+
 
     void MLRModel::train(tables::Table& trainingFeatures, tables::Table& trainingTargets, int epochs) {
         // Initialize constant and coefficients
@@ -38,28 +46,4 @@
             }
         }
     }
-    
-    double MLRModel::getConstant() {
-        return constant;
-    }
-    
-    void MLRModel::setConstant(double constant) {
-        this->constant = constant;
-    }
-    
-    std::vector<double> MLRModel::getCoeffs() {
-        return coeffs;
-    }
-    
-    void MLRModel::setCoeffs(std::vector<double>) {
-        this->coeffs = coeffs;
-    }
-    
-    double MLRModel::getLearningRate() {
-        return learningRate;
-    }
-
-    void MLRModel::setLearningRate(double learningRate) {
-        this->learningRate = learningRate;
-    }
-
+*/
