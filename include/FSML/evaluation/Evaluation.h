@@ -16,6 +16,17 @@ namespace tables {
         }
 
         template <typename T>
+        double classificationAccuracy(Column<T>& yActual, Column<T>& yPredicted) {
+            double correct = 0;
+            for (int i = 0; i < yActual.size(); i++) {
+                if (yActual.row(i) == yPredicted.row(i)) {
+                    correct++;
+                }
+            }
+            return correct / yActual.size();
+        }
+
+        template <typename T>
         double mae(Column<T>& yActual, Column<T>& yPredicted) {
             checkColumns(yActual, yPredicted, "mae");
 
