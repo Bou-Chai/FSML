@@ -1,3 +1,3 @@
-add_library(libSGDTrainer ./SGDTrainer.cpp)
-target_include_directories(libSGDTrainer PUBLIC ../../../include/ PRIVATE ./)
-target_link_libraries(libSGDTrainer libTables)
+add_library(libGDTrainers ./GDTrainer.cpp ./SGDTrainer.cpp)
+target_include_directories(libGDTrainers PUBLIC ../../../include PRIVATE ./)
+target_link_libraries(libGDTrainers libTables)

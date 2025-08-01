@@ -22,7 +22,7 @@ void SGDTrainer::train(PlanarModel& model, tables::Table& trainingFeatures, tabl
 
         // Go through all training data
         for (int i = 0; i < trainingFeatures.height(); i++) {
-            model.updateWeightsGD(trainingFeatures, trainingTargets, i);
+            model.updateWeightsGD(trainingFeatures, trainingTargets, i, learningRate);
         }
     }
 }

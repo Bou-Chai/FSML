@@ -7,7 +7,7 @@
 
 class SGDTrainer: public GDTrainer {
 public:
-    void train(PlanarModel& model, tables::Table& trainingFeatures, tables::Table& trainingTargets, int epochs);
+    void train(PlanarModel& model, tables::Table& trainingFeatures, tables::Table& trainingTargets, int epochs) override;
 };
 
 #endif

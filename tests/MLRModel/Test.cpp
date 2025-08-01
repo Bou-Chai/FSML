@@ -29,11 +29,10 @@ int main() {
 
     // Train model using gradient descent
     MLRModel model;
-    model.setLearningRate(0.04);
-    //model.train(trainingFeatures, trainingTargets, 5);
+
     SGDTrainer trainer;
+    trainer.setLearningRate(0.04);
     trainer.train(model, trainingFeatures, trainingTargets, 5);
-    //model.train(tr, trainingFeatures, trainingTargets, 5);
 
     // Print model weights
     std::cout << "Constant: " << model.getConstant() << "\n";

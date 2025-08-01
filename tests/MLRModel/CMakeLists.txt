@@ -1,2 +1,2 @@
 add_executable(testMLRModel ./Test.cpp)
-target_link_libraries(testMLRModel libPlanarModels libSGDTrainer)
+target_link_libraries(testMLRModel libPlanarModels libGDTrainers)
