@@ -11,6 +11,7 @@ public:
     std::string classify(const std::vector<double>& featureVals);
     double estimate(const std::vector<double>& featureVals, std::string c);
     void train(tables::Table& trainingFeatures, tables::Table& trainingTargets);
+    void printGpdfParams();
 
 private:
     // Maps to hold information on classes

@@ -1,2 +1,2 @@
 add_executable(testNaiveBayesModel ./Test.cpp)
-
+target_link_libraries(testNaiveBayesModel libNaiveBayesModel)
