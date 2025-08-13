@@ -11,7 +11,7 @@ int main() {
     dataset.loadCSV("../tests/data/iris.csv", ',');
     std::vector<std::string> titleList = {"sepal_length", "sepal_width", "petal_length", "petal_width"};
     dataset.toDouble(titleList);
-    dataset.reshuffle(33789876);
+    dataset.reshuffle();
 
     // Calculate size of training data and split data for training and testing
     int trainSize = 0.6 * dataset.height();
@@ -22,7 +22,6 @@ int main() {
 
     NaiveBayesModel model;
     model.train(trainingFeatures, trainingTargets);
-    std::cout << "HERE7\n";
 
     // Performance metrics
 
@@ -32,7 +31,6 @@ int main() {
     for (int i = 0; i < testTargets.height(); i++) {
         targetPredicted0.add(majorityClass);
     }
-    std::cout << "HERE8\n";
 
     // Generate column of values predicted by the model based on the test feature data
     tables::Column<std::string> targetPredictedM;
@@ -40,15 +38,15 @@ int main() {
         targetPredictedM.add(model.classify(testFeatures.getRow<double>(i)));
     }
 
-    std::cout << "HERE9\n";
+    // Print the mean and standard deviation for each feature of each class
+    std::cout << "Gaussian probability density function parameters:\n";
+    model.printGpdfParams();
+    std::cout << "\n";
 
     // Print performance metrics
     std::cout << "0-R Majority Class: " << majorityClass << "\n";
     std::cout << "Accuracy of 0-R: " << tables::eval::classificationAccuracy(testTargets.col<std::string>(0), targetPredicted0) << "\n";
     std::cout << "Accuracy of model: " << tables::eval::classificationAccuracy(testTargets.col<std::string>(0), targetPredictedM) << "\n";
-    model.classify({9,0,9,0});
-
-    model.printGpdfParams();
 
     return 0;
 }
